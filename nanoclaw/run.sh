@@ -6,6 +6,13 @@ export IS_SANDBOX=1
 mkdir -p /etc/profile.d
 echo 'export IS_SANDBOX=1' > /etc/profile.d/nanoclaw-sandbox.sh
 
+# Expose the Docker socket at /var/run/docker.sock so NanoClaw can spawn sibling
+# containers. HA's supervisor mounts it at /run/docker.sock via docker_api:true.
+if [ -S /run/docker.sock ] && [ ! -e /var/run/docker.sock ]; then
+  mkdir -p /var/run
+  ln -s /run/docker.sock /var/run/docker.sock
+fi
+
 # Persist Claude Code state (login, conversation history, config) across add-on
 # updates. /data is the add-on's private persistent dir, always mounted.
 mkdir -p /data/claude-home /data/claude-config

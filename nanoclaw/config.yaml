@@ -7,8 +7,6 @@ arch:
 init: false
 map:
   - share:rw
-privileged:
-  - DOCKER
 docker_api: true
 options:
   github_repo: ""

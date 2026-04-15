@@ -1,0 +1,16 @@
+name: NanoClaw
+version: "0.1.0"
+slug: nanoclaw
+description: NanoClaw orchestrator running on Home Assistant OS
+arch:
+  - aarch64
+init: false
+map:
+  - share:rw
+privileged:
+  - DOCKER
+docker_api: true
+options:
+  github_repo: ""
+schema:
+  github_repo: str

@@ -21,6 +21,22 @@ if [ ! -L /root/.config/claude ]; then
   ln -s /data/claude-config /root/.config/claude
 fi
 
+# Claude Code also stores its main config as a file at $HOME/.claude.json
+# (separate from the /root/.claude directory). Persist that too.
+if [ ! -f /data/claude-home/.claude.json ]; then
+  LATEST_BACKUP=$(ls -1t /data/claude-home/backups/.claude.json.backup.* 2>/dev/null | head -1)
+  if [ -n "$LATEST_BACKUP" ]; then
+    cp "$LATEST_BACKUP" /data/claude-home/.claude.json
+    echo "Restored .claude.json from backup: $LATEST_BACKUP"
+  elif [ -f /root/.claude.json ] && [ ! -L /root/.claude.json ]; then
+    cp /root/.claude.json /data/claude-home/.claude.json
+  fi
+fi
+if [ ! -L /root/.claude.json ]; then
+  rm -f /root/.claude.json
+  ln -s /data/claude-home/.claude.json /root/.claude.json
+fi
+
 REPO=$(jq -r '.github_repo' /data/options.json)
 
 if [ -z "$REPO" ] || [ "$REPO" = "null" ]; then

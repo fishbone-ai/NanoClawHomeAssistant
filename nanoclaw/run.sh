@@ -1,6 +1,21 @@
 #!/usr/bin/env bash
 # Note: no `set -e` -- we want the terminal to always come up, even if install fails.
 
+# Persist Claude Code state (login, conversation history, config) across add-on
+# updates. /data is the add-on's private persistent dir, always mounted.
+mkdir -p /data/claude-home /data/claude-config
+if [ ! -L /root/.claude ]; then
+  [ -d /root/.claude ] && cp -a /root/.claude/. /data/claude-home/ 2>/dev/null
+  rm -rf /root/.claude
+  ln -s /data/claude-home /root/.claude
+fi
+mkdir -p /root/.config
+if [ ! -L /root/.config/claude ]; then
+  [ -d /root/.config/claude ] && cp -a /root/.config/claude/. /data/claude-config/ 2>/dev/null
+  rm -rf /root/.config/claude
+  ln -s /data/claude-config /root/.config/claude
+fi
+
 REPO=$(jq -r '.github_repo' /data/options.json)
 
 if [ -z "$REPO" ] || [ "$REPO" = "null" ]; then

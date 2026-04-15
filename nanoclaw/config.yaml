@@ -1,5 +1,5 @@
 name: NanoClaw
-version: "0.4.0"
+version: "0.5.0"
 slug: nanoclaw
 description: NanoClaw orchestrator running on Home Assistant OS
 arch:
@@ -13,6 +13,8 @@ panel_title: NanoClaw
 panel_icon: mdi:robot
 map:
   - share:rw
+  - type: addon_config
+    read_only: false
 docker_api: true
 privileged:
   - SYS_ADMIN

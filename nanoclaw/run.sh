@@ -8,7 +8,9 @@ if [ -z "$REPO" ] || [ "$REPO" = "null" ]; then
 else
   cd /share
   if [ ! -d nanoclaw/.git ]; then
-    echo "Cloning into /share/nanoclaw"
+    # Never echo $REPO -- it contains the PAT.
+    REPO_SAFE=$(echo "$REPO" | sed -E 's#(https?://)[^@]+@#\1***@#')
+    echo "Cloning $REPO_SAFE into /share/nanoclaw"
     git clone "$REPO" nanoclaw || echo "WARNING: clone failed -- use the terminal to fix."
   fi
 

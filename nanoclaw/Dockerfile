@@ -1,7 +1,10 @@
 ARG BUILD_FROM=ghcr.io/home-assistant/base:latest
 FROM ${BUILD_FROM}
 
-RUN apk add --no-cache git bash docker-cli jq curl nodejs npm ttyd \
+RUN apk add --no-cache \
+      git bash docker-cli jq curl ttyd \
+      nodejs npm \
+      python3 make g++ \
  && npm install -g @anthropic-ai/claude-code
 
 COPY run.sh /run.sh

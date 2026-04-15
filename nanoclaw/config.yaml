@@ -1,5 +1,5 @@
 name: NanoClaw
-version: "0.10.0"
+version: "0.11.0"
 slug: nanoclaw
 description: NanoClaw orchestrator running on Home Assistant OS
 arch:

@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 # Note: no `set -e` -- we want the terminal to always come up, even if install fails.
 
+export IS_SANDBOX=1
+# Make it stick for any nested shells / tools that read profile.d too.
+mkdir -p /etc/profile.d
+echo 'export IS_SANDBOX=1' > /etc/profile.d/nanoclaw-sandbox.sh
+
 # Persist Claude Code state (login, conversation history, config) across add-on
 # updates. /data is the add-on's private persistent dir, always mounted.
 mkdir -p /data/claude-home /data/claude-config

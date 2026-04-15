@@ -5,6 +5,12 @@ description: NanoClaw orchestrator running on Home Assistant OS
 arch:
   - aarch64
 init: false
+startup: services
+boot: auto
+ingress: true
+ingress_port: 7681
+panel_title: NanoClaw
+panel_icon: mdi:robot
 map:
   - share:rw
 docker_api: true

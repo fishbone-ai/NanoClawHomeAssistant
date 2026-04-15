@@ -17,4 +17,13 @@ fi
 cd /share/nanoclaw
 [ -d node_modules ] || npm ci
 
-exec npm start
+if [ -f /share/nanoclaw/.setup-complete ]; then
+  echo "Setup marker found -- starting NanoClaw in the background."
+  npm start > /share/nanoclaw/nanoclaw.log 2>&1 &
+else
+  echo "First run: open the NanoClaw tab in the sidebar, run 'claude' to do /setup,"
+  echo "then 'touch /share/nanoclaw/.setup-complete' and restart the add-on."
+fi
+
+echo "Starting web terminal on ingress port 7681..."
+exec ttyd -p 7681 -W bash

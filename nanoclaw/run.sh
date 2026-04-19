@@ -75,4 +75,18 @@ else
 fi
 
 echo "Starting web terminal on ingress port 7681..."
+
+# SSH: persist host keys across rebuilds, load authorized_keys from /data/ssh                                                                                                                        
+mkdir -p /data/ssh                                                                                                                                                                                   
+chmod 700 /data/ssh
+if [ ! -f /data/ssh/ssh_host_ed25519_key ]; then                                                                                                                                                     
+  ssh-keygen -A -f /tmp/sshkeys                                 
+  cp /tmp/sshkeys/etc/ssh/ssh_host_* /data/ssh/                                                                                                                                                      
+fi                                                                                                                                                                                                   
+cp /data/ssh/ssh_host_* /etc/ssh/                                                                                                                                                                    
+if [ ! -f /data/ssh/authorized_keys ]; then                                                                                                                                                          
+  echo "SSH: no authorized_keys found at /data/ssh/authorized_keys"                                                                                                   
+fi                                                                                                                                                                                                   
+/usr/sbin/sshd -p 2222 && echo "SSH listening on port 2222" 
+
 exec ttyd -p 7681 -W bash
